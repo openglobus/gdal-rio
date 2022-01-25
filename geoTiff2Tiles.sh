@@ -1,1 +1,1 @@
-gdal2tiles.py --zoom=1-17 -r near --processes=5 --xyz /source/output_3857_RGB.tif /dest --config GDAL_PAM_ENABLED NO
+gdal2tiles.py --zoom=$1-$2 -r near --processes=5 --xyz $3/output_3857_RGB.tif $4 --config GDAL_PAM_ENABLED NO
