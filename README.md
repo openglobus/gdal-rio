@@ -4,7 +4,7 @@ Converts geotiff elevation data files to elevation rgb tiles. Based on osgeo/gda
 
 ### Command
 
-`docker run -it --rm -v <mount>:<mount> gdal-rio:latest /bin/bash ./exec.sh <zmin> <zmax> <source> <dest>`
+`docker run -it --rm -v <mount>:<mount> gdal-rio:latest /bin/bash ./exec.sh <zmin> <zmax> <source> <dest> [norgbify]`
 
 where,
   
@@ -12,6 +12,7 @@ where,
 	- <zmin>, <zmax> - Zoom levels to render from zmax to zmin
 	- <source> - Source folder must be inside mount folder. Source folder contains geoTiff elevation data files
 	- <dest> - Destination folder for rgba tiles
+	- [norgbify] - options for non dem geoTiff
 
 ### Example
 
