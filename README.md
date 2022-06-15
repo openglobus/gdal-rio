@@ -21,4 +21,4 @@ Gets geoTiff files from `/media/source/Canary20m` and creates rgba tiles inside 
 
 ### Installation
 
-`docker build -t gdal-rio`
+`docker build -t gdal-rio .`
