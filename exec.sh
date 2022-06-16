@@ -1,4 +1,4 @@
-if [ $5 == "norgbify" ]
+if [[ $5 -eq "norgbify" ]]
 then
     /bin/bash ./warprgbify.sh $3
 else
