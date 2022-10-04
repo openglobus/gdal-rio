@@ -16,7 +16,7 @@ where,
 
 ### Example
 
-`docker run -it --rm -v /media:/media gdal-rio:latest /bin/bash ./exec.sh 1 16 /media/source/Canary20m /media/heights/public/canary20m`
+`docker run -it --rm -v /media:/media gdal-rio /bin/bash ./exec.sh 1 16 /media/source/Canary20m /media/heights/public/canary20m`
 
 Gets geoTiff files from `/media/source/Canary20m` and creates rgba tiles inside `/media/heights/public/canary20m`
 
