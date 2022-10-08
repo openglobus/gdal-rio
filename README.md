@@ -9,11 +9,11 @@ Converts geotiff elevation data files to elevation rgb tiles. Based on osgeo/gda
 
 
 #### Append a tile set, created from geotiff elevation data folder, to a destination folder with ready tiles
-`docker run -it --rm -v <mount>:<mount> gdal-rio:latest /bin/bash ./rgbifyff.sh <source> <dest> <zmin> <zmax>`
+`docker run -it --rm -v <mount>:<mount> gdal-rio /bin/bash ./rgbifyff.sh <source> <dest> <zmin> <zmax>`
 
 
 #### Creates a tileset folder
-`docker run -it --rm -v <mount>:<mount> gdal-rio:latest /bin/bash ./exec.sh <zmin> <zmax> <source> <dest> [norgbify]`
+`docker run -it --rm -v <mount>:<mount> gdal-rio /bin/bash ./exec.sh <zmin> <zmax> <source> <dest> [norgbify]`
 
 where,
   
