@@ -28,10 +28,10 @@ done
 
 if [ -n "$s_zip" ]; then
   s_folder=`basename ${s_zip} .zip`
-  folder=${mount}/${s_folder}
+  folder=${mount}/_temp_${s_folder}
   unzip -q ${s_zip} -d ${folder}
-  docker run -it --rm -v $mount:/_processing gdal-rio /bin/bash ./rgbifyff.sh /_processing/${s_folder} /_processing/${dest} $zoom $s_epsg
+  docker run -it --rm -v $mount:/__processing__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__/_temp_${s_folder} /__processing__/${dest} $zoom $s_epsg
   rm -rf ${folder}
 else
-  docker run -it --rm -v $mount:/_processing gdal-rio /bin/bash ./rgbifyff.sh /_processing/${s_folder} /_processing/${dest} $zoom $s_epsg
+  docker run -it --rm -v $mount:/__processing__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__/${s_folder} /__processing__/${dest} $zoom $s_epsg
 fi
