@@ -27,7 +27,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ -n "$s_zip" ]; then
-  src_folder=`basename ${s_zip} .zip`
+  s_folder=`basename ${s_zip} .zip`
   folder=${mount}/${s_folder}
   unzip -q ${s_zip} -d ${folder}
   docker run -it --rm -v $mount:/_processing gdal-rio /bin/bash ./rgbifyff.sh /_processing/${s_folder} /_processing/${dest} $zoom $s_epsg
