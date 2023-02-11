@@ -42,15 +42,14 @@ def merge_img(srcimg, dstimg):
             dstimg[i, j] = srcimg[i, j]
 
 
-def copytree(src, dst, symlinks=False, ignore=None):
-    """Copying folders."""
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            shutil.copy2(s, d)
+def movefolder(src, dst):
+    """move folder"""
+    os.rename(src, dst)
+
+
+def movefile(src, dst):
+    """move one file"""
+    os.rename(src, dst)
 
 
 def merge_folders(src_path, dst_path):
@@ -61,10 +60,9 @@ def merge_folders(src_path, dst_path):
 
         if not os.path.exists(dst_p):
             if os.path.isfile(src_p):
-                shutil.copyfile(src_p, dst_p)  # dst_path?
+                movefile(src_p, dst_p)
             else:
-                os.mkdir(dst_p)
-                copytree(src_p, dst_p)
+                movefolder(src_p, dst_p)
 
         elif os.path.isdir(src_p):
             merge_folders(src_p, dst_p)
