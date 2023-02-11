@@ -3,7 +3,6 @@
 """
 import os
 import sys
-import shutil
 import numpy as np
 import cv2
 
