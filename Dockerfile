@@ -10,4 +10,4 @@ ADD ./warp.sh .
 ADD ./geoTiff2Tiles.sh .
 ADD ./exec.sh .
 ADD ./rgbifyff.sh .
-ADD ./merge_folders.py .
+ADD ./mergeFolders .
