@@ -1,7 +1,6 @@
 #include "lodepng.h"
 
 #include <experimental/filesystem>
-#include <filesystem>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -150,8 +149,8 @@ int main(int argc, char *argv[])
 {
     std::cout << "Merge folders:..." << '\n';
 
-    const char *srcPath = argc > 1 ? argv[1] : "./test/1/bur",
-               *dstPath = argc > 1 ? argv[2] : "./test/1/austria10m";
+    const char *srcPath = argc > 1 ? argv[1] : "./test/tiles/bur",
+               *dstPath = argc > 1 ? argv[2] : "./test/tiles/austria10m";
 
     std::string srcPath_str = srcPath;
     std::string dstPath_str = dstPath;
