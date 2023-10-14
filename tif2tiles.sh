@@ -11,7 +11,7 @@
 #
 # 1) ./tif2tiles.sh --mount /mnt/d/terrain/nz --s_zip /mnt/d/terrain/nz/lds-canterbury-amberley-lidar-1m-dem-2012-GTiff.zip --dest /dest --zoom 1-4
 #
-# 2) ./tif2tiles.sh --mount /mnt/d/terrain/andorra --src_folder ./ --dest /dest --zoom 1-4 --src_epsg 27563
+# 2) ./tif2tiles.sh --mount /mnt/d/terrain/andorra --s_folder ./ --dest /dest --zoom 1-4 --src_epsg 27563
 # -----------------------------------------------------------------------------
 
 if [ $# -eq 0 ]; then
