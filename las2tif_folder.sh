@@ -25,8 +25,17 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-FILES=${folder}/*.las
-for f in $FILES
+FILES_LAS=${folder}/*.las
+for f in $FILES_LAS
+do
+  filename=`basename ${f}`
+  echo ">>> PROCESSING $filename"
+  ./las2tif.sh --mount ${folder} --filename ${filename} --resolution ${resolution}
+  echo $'\n'
+done
+
+FILES_LAZ=${folder}/*.laz
+for f in $FILES_LAZ
 do
   filename=`basename ${f}`
   echo ">>> PROCESSING $filename"
