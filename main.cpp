@@ -28,6 +28,7 @@ inline float height(unsigned char *rgb, int index)
 
 inline bool isNoData(unsigned char *rgb, int index)
 {
+    float h = height(rgb, index);
     return height(rgb, index) == NODATA;
 }
 

@@ -1,4 +1,4 @@
-FROM osgeo/gdal:ubuntu-small-3.4.0
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.6.3
 LABEL maintainer="Zemledelec mgevlich@gmail.com"
 LABEL description="Converts heights geotiff to rgb tiles"
 WORKDIR /work
