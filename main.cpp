@@ -1,5 +1,5 @@
 /**
- * Build executable:
+ * Build:
  * g++ main.cpp lodepng.cpp -lstdc++fs -o mergeFolders
 */
 #include "lodepng.h"
