@@ -1,3 +1,7 @@
+/**
+ * Build executable:
+ * g++ main.cpp lodepng.cpp -lstdc++fs -o mergeFolders
+*/
 #include "lodepng.h"
 
 #include <experimental/filesystem>
