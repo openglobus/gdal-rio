@@ -37,9 +37,9 @@ inline bool isZero(unsigned char *rgb, int index)
     return height(rgb, index) == ZERO;
 }
 
-inline bool isUpdated(unsigned char *rgb, int index)
+inline bool needUpdate(unsigned char *srcRgb, int index)
 {
-    return !(isNoData(rgb, index) || isZero(rgb, index));
+    return !(isNoData(srcRgb, index) || isZero(srcRgb, index));
 }
 
 inline bool isDirectory(const char *path)
@@ -100,7 +100,7 @@ void mergeImages(const char *src, const char *dst)
 
     for (int i = 0, size = srcImage.size(); i < size; i += 4)
     {
-        if (isUpdated(srcImageArr, i))
+        if (needUpdate(srcImageArr, i))
         {
             dstImageArr[i] = srcImageArr[i];
             dstImageArr[i + 1] = srcImageArr[i + 1];
