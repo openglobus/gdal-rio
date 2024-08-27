@@ -17,3 +17,10 @@ em-2020-2021-GTiff.zip --dest ./heights/public/nz --zoom 1-19`
 
 `sudo ./tif2tiles.sh --mount / --s_folder /mnt/d/terrain/andorra/src
  --dest /mnt/d/terrain/andorra/dest --zoom 1-19`
+
+#### Merge existing tiles into other collection
+1) Run gdal-rio docker: 
+docker run -ti -v /media:/terrain gdal-rio
+
+2) Merge tiles from eu10 into all folders:
+./mergeFolders /terrain/heights/public/eu10/ /terrain/heights/public/all/
