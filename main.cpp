@@ -1,7 +1,21 @@
 /**
  * Build:
  * g++ main.cpp lodepng.cpp -lstdc++fs -o mergeFolders
-*/
+ * 
+ * Run:
+ * ./mergeFolders ./test/tiles/bur ./test/tiles/austria10m
+ * 
+ * or
+ * 
+ * ./mergeFolders ./test/tiles/bur ./test/tiles/austria10m -20000 0.1022
+ * 
+ * where,
+ *      first path is a tile data source
+ *      second path is a tile data destination
+ *      third param -20000 is minHeight
+ *      forth param is height resolution according to the:
+ *      minHeight + resolution * (r * 256 * 256 + g * 256 + b);
+ */
 #include "lodepng.h"
 
 #include <experimental/filesystem>
@@ -10,7 +24,6 @@
 #include <string>
 #include <sys/stat.h>
 
-#define NODATA -10000.0
 #define ZERO 0.0
 
 #define R 0
@@ -21,25 +34,31 @@ using namespace std;
 
 namespace fs = std::experimental::filesystem;
 
-inline float height(unsigned char *rgb, int index)
+struct DemParams
 {
-    return -10000.0 + 0.1 * (rgb[index + R] * 256 * 256 + rgb[index + G] * 256 + rgb[index + B]);
+    float minHeight;
+    float resolution;
+};
+
+inline float height(unsigned char *rgb, int index, const DemParams &demParams)
+{
+    return demParams.minHeight + demParams.resolution * (rgb[index + R] * 256 * 256 + rgb[index + G] * 256 + rgb[index + B]);
 }
 
-inline bool isNoData(unsigned char *rgb, int index)
+inline bool isNoData(unsigned char *rgb, int index, const DemParams &demParams)
 {
-    float h = height(rgb, index);
-    return height(rgb, index) == NODATA;
+    float h = height(rgb, index, demParams);
+    return height(rgb, index, demParams) == demParams.minHeight; // Looks like minHeight is NODATA
 }
 
-inline bool isZero(unsigned char *rgb, int index)
+inline bool isZero(unsigned char *rgb, int index, const DemParams &demParams)
 {
-    return height(rgb, index) == ZERO;
+    return height(rgb, index, demParams) == ZERO;
 }
 
-inline bool needUpdate(unsigned char *srcRgb, int index)
+inline bool needUpdate(unsigned char *srcRgb, int index, const DemParams &demParams)
 {
-    return !(isNoData(srcRgb, index) || isZero(srcRgb, index));
+    return !(isNoData(srcRgb, index, demParams) || isZero(srcRgb, index, demParams));
 }
 
 inline bool isDirectory(const char *path)
@@ -68,7 +87,7 @@ void moveFolder(const char *src, const char *dst)
     fs::rename(src, dst);
 }
 
-void mergeImages(const char *src, const char *dst)
+void mergeImages(const char *src, const char *dst, const DemParams &demParams)
 {
     std::cout << '+';
 
@@ -100,7 +119,7 @@ void mergeImages(const char *src, const char *dst)
 
     for (int i = 0, size = srcImage.size(); i < size; i += 4)
     {
-        if (needUpdate(srcImageArr, i))
+        if (needUpdate(srcImageArr, i, demParams))
         {
             dstImageArr[i] = srcImageArr[i];
             dstImageArr[i + 1] = srcImageArr[i + 1];
@@ -119,7 +138,7 @@ void mergeImages(const char *src, const char *dst)
     }
 }
 
-void mergeFolders(std::string &srcPath, std::string &dstPath)
+void mergeFolders(const std::string &srcPath, const std::string &dstPath, const DemParams &demParams)
 {
     for (const auto &entry : fs::directory_iterator(srcPath))
     {
@@ -141,11 +160,11 @@ void mergeFolders(std::string &srcPath, std::string &dstPath)
         }
         else if (isDirectory(src_p_str.c_str()))
         {
-            mergeFolders(src_p_str, dst_p_str);
+            mergeFolders(src_p_str, dst_p_str, demParams);
         }
         else
         {
-            mergeImages(src_p_str.c_str(), dst_p_str.c_str());
+            mergeImages(src_p_str.c_str(), dst_p_str.c_str(), demParams);
         }
     }
 }
@@ -157,10 +176,15 @@ int main(int argc, char *argv[])
     const char *srcPath = argc > 1 ? argv[1] : "./test/tiles/bur",
                *dstPath = argc > 1 ? argv[2] : "./test/tiles/austria10m";
 
+    float minHeight = argc > 2 ? std::stof(argv[3]) : -10000.0f;
+    float resolution = argc > 3 ? std::stof(argv[4]) : 0.1f;
+
+    DemParams demParms = {minHeight, resolution};
+
     std::string srcPath_str = srcPath;
     std::string dstPath_str = dstPath;
 
-    mergeFolders(srcPath_str, dstPath_str);
+    mergeFolders(srcPath_str, dstPath_str, demParms);
 
     std::cout << '\n'
               << "Done." << '\n';
