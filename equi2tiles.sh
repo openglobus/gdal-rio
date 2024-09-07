@@ -9,6 +9,7 @@
 #   --r - (*)This sets the scale factor. $r would be replaced with a value that determines the resolution or interval for encoding elevation differences. Smaller values lead to finer distinctions in elevation but can increase file size.
 #   --z - Zomm levels -z 1-12.
 #   --d - Destination folder.
+#   [--norgbify] - Skip DEM colorization
 #   
 # Example: 
 #
