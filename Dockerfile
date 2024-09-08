@@ -11,3 +11,4 @@ ADD ./geoTiff2Tiles.sh .
 ADD ./exec.sh .
 ADD ./rgbifyff.sh .
 ADD ./mergeFolders .
+ADD ./equi2tiles.sh .

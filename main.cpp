@@ -162,7 +162,7 @@ void mergeFolders(const std::string &srcPath, const std::string &dstPath, const 
         {
             mergeFolders(src_p_str, dst_p_str, demParams);
         }
-        else
+        else if (src_p.extension() == ".png")
         {
             mergeImages(src_p_str.c_str(), dst_p_str.c_str(), demParams);
         }
