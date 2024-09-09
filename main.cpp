@@ -87,6 +87,19 @@ void moveFolder(const char *src, const char *dst)
     fs::rename(src, dst);
 }
 
+//
+// in case you try to move files for different file systems
+//
+// void moveFile(const std::string& src, const std::string& dst) {
+//     std::string command = "mv " + src + " " + dst;
+//     std::system(command.c_str());
+// }
+
+// void moveFolder(const std::string& src, const std::string& dst) {
+//     std::string command = "mv " + src + " " + dst;
+//     std::system(command.c_str());
+// }
+
 void mergeImages(const char *src, const char *dst, const DemParams &demParams)
 {
     std::cout << '+';
@@ -174,10 +187,10 @@ int main(int argc, char *argv[])
     std::cout << "Merge folders:..." << '\n';
 
     const char *srcPath = argc > 1 ? argv[1] : "./test/tiles/bur",
-               *dstPath = argc > 1 ? argv[2] : "./test/tiles/austria10m";
+               *dstPath = argc > 2 ? argv[2] : "./test/tiles/austria10m";
 
-    float minHeight = argc > 2 ? std::stof(argv[3]) : -10000.0f;
-    float resolution = argc > 3 ? std::stof(argv[4]) : 0.1f;
+    float minHeight = argc > 3 ? std::stof(argv[3]) : -10000.0f;
+    float resolution = argc > 4 ? std::stof(argv[4]) : 0.1f;
 
     DemParams demParms = {minHeight, resolution};
 
@@ -186,6 +199,5 @@ int main(int argc, char *argv[])
 
     mergeFolders(srcPath_str, dstPath_str, demParms);
 
-    std::cout << '\n'
-              << "Done." << '\n';
+    std::cout << '\n' << "Done." << '\n';
 }

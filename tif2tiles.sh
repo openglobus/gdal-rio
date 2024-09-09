@@ -9,9 +9,9 @@
 #   
 # Example: 
 #
-# 1) ./tif2tiles.sh --mount /mnt/d/terrain/nz --s_zip /mnt/d/terrain/nz/lds-canterbury-amberley-lidar-1m-dem-2012-GTiff.zip --dest /dest --zoom 1-4
+# 1) ./tif2tiles.sh --s_zip /mnt/d/terrain/nz/lds-canterbury-amberley-lidar-1m-dem-2012-GTiff.zip --dest /mnt/d/terrain/nz/dest --zoom 1-4
 #
-# 2) ./tif2tiles.sh --mount /mnt/d/terrain/andorra --s_folder ./ --dest /dest --zoom 1-4 --s_epsg 27563
+# 2) ./tif2tiles.sh --s_folder /mnt/d/terrain/andorra --dest /dest --zoom 1-4 --s_epsg 27563
 # -----------------------------------------------------------------------------
 
 if [ $# -eq 0 ]; then
@@ -28,10 +28,10 @@ done
 
 if [ -n "$s_zip" ]; then
   s_folder=`basename ${s_zip} .zip`
-  folder=${mount}/_temp_${s_folder}
+  folder=./_temp_${s_folder}
   unzip -q ${s_zip} -d ${folder}
-  docker run --cpuset-cpus 0-4 -it --rm -v $mount:/__processing__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__/_temp_${s_folder} /__processing__/${dest} $zoom $s_epsg
+  docker run --cpuset-cpus 0-4 -it --rm -v $folder:/__processing__ -v $dest:/__dest__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__ /__dest__ $zoom $s_epsg
   rm -rf ${folder}
 else
-  docker run --cpuset-cpus 0-4 -it --rm -v $mount:/__processing__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__/${s_folder} /__processing__/${dest} $zoom $s_epsg
+  docker run --cpuset-cpus 0-4 -it --rm -v $s_folder:/__processing__ -v $dest:/__dest__ gdal-rio /bin/bash ./rgbifyff.sh /__processing__ /__dest__ $zoom $s_epsg
 fi
