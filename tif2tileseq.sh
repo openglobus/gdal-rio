@@ -22,17 +22,20 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+norgbify=false
+
 while [ $# -gt 0 ]; do
-   if [[ $1 == *"--"* ]]; then
+    if [[ $1 == *"--"* ]]; then
         v="${1/--/}"
         declare $v="$2"
-   fi
-  shift
+    elif [[ $1 == "--norgbify" ]]; then
+        norgbify=true
+    fi
+    shift
 done
 
 file_name=$(basename "$f")
 
 mkdir $d
 
-docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash ./equi2tiles.sh --b "$b" --f /__processing__/$file_name --h $h --r $r --z $z --d /__out__ $norgbify
-#docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash
+docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash ./equi2tiles.sh --b "$b" --f /__processing__/$file_name --h $h --r $r --z $z --d /__out__ ${norgbify:+--norgbify}
