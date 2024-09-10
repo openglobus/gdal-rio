@@ -13,7 +13,7 @@ do
 
   gdalwarp -co BIGTIFF=YES -dstnodata None -co TILED=YES -co COMPRESS=DEFLATE $2/${filename}/temp/${filename}_3857.tif $2/${filename}/temp/${filename}_3857_NODATA.tif
   rio rgbify --co BIGTIFF=YES -b -10000 -i 0.1 $2/${filename}/temp/${filename}_3857_NODATA.tif $2/${filename}/temp/${filename}_3857_RGB.tif
-  gdal2tiles.py -w none --zoom=$3 -r near --processes=5 --xyz $2/${filename}/temp/${filename}_3857_RGB.tif $2/${filename} --config GDAL_PAM_ENABLED NO
+  gdal2tiles.py -w none --no-kml --zoom=$3 -r near --processes=5 --xyz $2/${filename}/temp/${filename}_3857_RGB.tif $2/${filename} --config GDAL_PAM_ENABLED NO
   
   rm -rf $2/${filename}/temp
 
