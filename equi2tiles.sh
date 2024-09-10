@@ -6,7 +6,7 @@
 #   --b - Bounds coordinates: Left, top, right, bottom in equirectangular projection. For example: -u "-180 90 180 -90".
 #   --f - Input GeoTiff file.
 #   --h - (*)This specifies the band to process. $h would typically be replaced with the band index that contains the height data.
-#   --r - (*)This sets the scale factor. $r would be replaced with a value that determines the resolution or interval for encoding elevation differences. Smaller values lead to finer distinctions in elevation but can increase file size.
+#   --r - (*)This sets the scale factor. $r would be replaced with a value that determines the resolution or interval for encodin elevation differences. Smaller values lead to finer distinctions in elevation but can increase file size.
 #   --z - Zomm levels -z 1-12.
 #   --d - Destination folder.
 #   [--norgbify] - Skip DEM colorization
