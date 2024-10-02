@@ -47,12 +47,12 @@ if [ "$norgbify" = false ]; then
     gdalwarp -r near -co BIGTIFF=YES -t_srs EPSG:4326 -dstnodata None -co TILED=YES -co COMPRESS=DEFLATE ./temp/output.tif ./temp/output_NODATA.tif
     rm ./temp/output.tif
     rio rgbify --co BIGTIFF=YES -b $h -i $r ./temp/output_NODATA.tif ./temp/output.tif
-    gdal2tiles.py --profile=geodetic --s_srs EPSG:4326 -d --xyz --zoom=$z -r near --no-kml -w none --processes=5 ./temp/output.tif $d/__temp__ --config GDAL_PAM_ENABLED NO
+    gdal2tiles.py --profile=geodetic --s_srs EPSG:4326 -d --xyz --zoom=$z -r near --no-kml -w none --processes=3 ./temp/output.tif $d/__temp__ --config GDAL_PAM_ENABLED NO
     ./mergeFolders $d/__temp__ $d $h $r
     rm -rf $d/__temp__
 else
     gdalwarp -r near -co BIGTIFF=YES -t_srs EPSG:4326 -dstnodata None -co TILED=YES -co COMPRESS=DEFLATE ./temp/output.tif ./temp/output_NODATA.tif
-    gdal2tiles.py --profile=geodetic --s_srs EPSG:4326 -d --xyz --zoom=$z -r near --no-kml -w none --processes=5 ./temp/output.tif $d --config GDAL_PAM_ENABLED NO
+    gdal2tiles.py --profile=geodetic --s_srs EPSG:4326 -d --xyz --zoom=$z -r near --no-kml -w none --processes=3 ./temp/output.tif $d --config GDAL_PAM_ENABLED NO
 fi
 
 rm -rf ./temp

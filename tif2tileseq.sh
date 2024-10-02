@@ -55,5 +55,5 @@ mkdir $d
 if [ "$norgbify" = false ]; then
     docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash ./equi2tiles.sh --b "$b" --f /__processing__/$file_name $h_value $r_value --z $z --d /__out__
 else
-    docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash ./equi2tiles.sh --b "$b" --f /__processing__/$file_name $h_value $r_value --z $z --d /__out__ --norgbify
+    docker run --cpuset-cpus 0-4 -it --rm -v $f:/__processing__/$file_name -v $d:/__out__ gdal-rio /bin/bash ./equi2tiles.sh --b "$b" --f /__processing__/$file_name --z $z --d /__out__ --norgbify
 fi

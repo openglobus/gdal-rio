@@ -47,7 +47,6 @@ inline float height(unsigned char *rgb, int index, const DemParams &demParams)
 
 inline bool isNoData(unsigned char *rgb, int index, const DemParams &demParams)
 {
-    float h = height(rgb, index, demParams);
     return height(rgb, index, demParams) == demParams.minHeight; // Looks like minHeight is NODATA
 }
 
