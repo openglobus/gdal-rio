@@ -1,25 +1,48 @@
-FILES=$1/*.tif
+while [ $# -gt 0 ]; do
+   if [[ $1 == *"--"* ]]; then
+        v="${1/--/}"
+        declare $v="$2"
+   fi
+  shift
+done
+
+FILES=$folder/*.tif
 for f in $FILES
 do
   echo ">>> PROCESSING $f"
   filename=`basename ${f} .tif`
-  mkdir -p $2/${filename}/temp
+  mkdir -p $dest/${filename}/temp
 
-  if [ -n "$4" ]; then
-    gdalwarp -co BIGTIFF=YES -s_srs EPSG:$4 -t_srs EPSG:3857 -r near -of GTiff $1/${filename}.tif $2/${filename}/temp/${filename}_3857.tif
+ if [ -n "$t_srs" ]; then
+  echo "...REPROJECTING TO $t_srs:"
+  if [ -n "$s_epsg" ]; then
+    gdalwarp -co BIGTIFF=YES -s_srs "EPSG:$s_epsg" -t_srs "$t_srs" -r average -of GTiff $folder/${filename}.tif $dest/${filename}/temp/${filename}_TSRS.tif
   else
-    gdalwarp -co BIGTIFF=YES -t_srs EPSG:3857 -r near -of GTiff $1/${filename}.tif $2/${filename}/temp/${filename}_3857.tif
+    gdalwarp -co BIGTIFF=YES -t_srs "$t_srs" -r average -of GTiff $folder/${filename}.tif $dest/${filename}/temp/${filename}_TSRS.tif
   fi
+  echo "...REPROJECTING TO EPSG:3857:"
+  gdalwarp -co BIGTIFF=YES -s_srs "$t_srs" -t_srs "EPSG:3857" -r near -of GTiff $dest/${filename}/temp/${filename}_TSRS.tif $dest/${filename}/temp/${filename}_3857.tif
+else
+  if [ -n "$s_epsg" ]; then
+      echo "...REPROJECTING FROM EPSG:$s_epsg TO EPSG:3857:"
+     gdalwarp -co BIGTIFF=YES -s_srs "EPSG:$s_epsg" -t_srs "EPSG:3857" -r near -of GTiff $folder/${filename}.tif $dest/${filename}/temp/${filename}_3857.tif
+  else
+    echo "...REPROJECTING TO EPSG:3857:"
+    gdalwarp -co BIGTIFF=YES -t_srs "EPSG:3857" -r near -of GTiff $folder/${filename}.tif $dest/${filename}/temp/${filename}_3857.tif
+  fi
+fi
 
-  gdalwarp -co BIGTIFF=YES -dstnodata None -co TILED=YES -co COMPRESS=DEFLATE $2/${filename}/temp/${filename}_3857.tif $2/${filename}/temp/${filename}_3857_NODATA.tif
-  rio rgbify --co BIGTIFF=YES -b -10000 -i 0.1 $2/${filename}/temp/${filename}_3857_NODATA.tif $2/${filename}/temp/${filename}_3857_RGB.tif
-  gdal2tiles.py -w none --no-kml --zoom=$3 -r near --processes=5 --xyz $2/${filename}/temp/${filename}_3857_RGB.tif $2/${filename} --config GDAL_PAM_ENABLED NO
+echo "...SETTING NODATA VALUES:"
+gdalwarp -co BIGTIFF=YES -dstnodata None -co TILED=YES -co COMPRESS=DEFLATE $dest/${filename}/temp/${filename}_3857.tif $dest/${filename}/temp/${filename}_3857_NODATA.tif
+echo "...CREATING RGB:"
+rio rgbify --co BIGTIFF=YES -b -10000 -i 0.1 $dest/${filename}/temp/${filename}_3857_NODATA.tif $dest/${filename}/temp/${filename}_3857_RGB.tif
+gdal2tiles.py -w none --no-kml --zoom=$zoom -r near --processes=5 --xyz $dest/${filename}/temp/${filename}_3857_RGB.tif $dest/${filename} --config GDAL_PAM_ENABLED NO
   
-  rm -rf $2/${filename}/temp
+rm -rf $dest/${filename}/temp
 
-  ./mergeFolders $2/$filename $2
+./mergeFolders $dest/$filename $dest
 
-  rm -rf $2/${filename}
+rm -rf $dest/${filename}
 
   echo $'\n'
 done
