@@ -1,26 +1,69 @@
-# Docker gdal-rio
+# **Docker gdal-rio**
 
-Converts geotiff elevation data files to elevation rgb tiles. Based on osgeo/gdal docker image.
+### **Overview**
+`gdal-rio` is a Docker-based tool designed to convert GeoTIFF elevation data into elevation RGB tiles. Built on the `osgeo/gdal` Docker image, it enables seamless processing of terrain data.
 
+---
 
-#### Installation
+## **Installation**
 
-`docker build -t gdal-rio .`
+To build the Docker image, use the following command:
 
+```bash
+docker build -t gdal-rio .
+```
 
-#### Append a tile set, created from geotiff elevation data folder, to a destination set of tif archive
-`sudo ./tif2tiles.sh --mount <mountFolder> --s_zip <zip> --dest <dest> --zoom <minZoom>-<maxZoom>`
+---
 
-#### Example
-`sudo ./tif2tiles.sh --mount /media --s_zip /media/source/nz/progress/lds-manawatu-whanganui-whanganui-urban-lidar-1m-d
-em-2020-2021-GTiff.zip --dest ./heights/public/nz --zoom 1-19`
+## **Parameters**
 
-`sudo ./tif2tiles.sh --mount / --s_folder /mnt/d/terrain/andorra/src
- --dest /mnt/d/terrain/andorra/dest --zoom 1-19`
+| **Parameter**     | **Description**                                                                                       | **Example**                                              |
+|--------------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| `--s_zip`          | Specifies the source ZIP file containing GeoTIFF elevation data.                                      | `/mnt/d/terrain/nz/lds-canterbury.zip`                   |
+| `--s_folder`       | Specifies the source folder containing GeoTIFF elevation data.                                        | `/mnt/d/terrain/andorra`                                 |
+| `--dest`           | Defines the destination path for the output RGB tiles.                                                | `/mnt/d/terrain/dest`                                    |
+| `--zoom`           | Specifies the zoom level range in the format `<min>-<max>`.                                           | `1-4`                                                    |
+| `[--s_epsg]`       | Optional: Sets the source EPSG code for the data.                                                     | `27563`                                                  |
+| `[--t_srs]`        | Optional: Specifies the target spatial reference system (PROJ string).                                | `+proj=latlong +datum=WGS84 +geoidgrids=egm08_25.gtx`    |
 
-#### Merge existing tiles into other collection
-1) Run gdal-rio docker: 
+---
+
+## **Usage**
+
+### **Generate Elevation RGB Tiles**
+
+**From a ZIP File:**
+
+```bash
+./tif2tiles.sh --s_zip /mnt/d/terrain/nz/lds-canterbury-lidar.zip --dest /mnt/d/terrain/nz/dest --zoom 1-4
+```
+
+**From a Folder:**
+
+```bash
+./tif2tiles.sh --s_folder /mnt/d/terrain/andorra --dest /dest --zoom 1-4 --s_epsg 27563
+```
+
+**For High-Resolution Zoom Levels:**
+
+```bash
+./tif2tiles.sh --s_folder ~/usgs/ --dest ~/myterrain/zion --zoom 1-19
+```
+
+---
+
+### **Merge Existing Tiles**
+
+To merge RGB tiles from one collection into another, first run the `gdal-rio` Docker container:
+
+```bash
 docker run -ti -v /media:/terrain gdal-rio
+```
 
-2) Merge tiles from eu10 into all folders:
+Then merge tiles:
+
+```bash
 ./mergeFolders /terrain/heights/public/eu10/ /terrain/heights/public/all/
+```
+
+---
